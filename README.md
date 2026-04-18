@@ -39,3 +39,8 @@ MIT License
 ---
 
 Built by [The BookMaster](https://github.com/Retsumdk) with [Zo Computer](https://zo.computer)
+
+## 🔗 Related Repos
+- [retry-queue-worker](https://github.com/Retsumdk/retry-queue-worker) — Exponential backoff retry queue
+- [health-check-monitor](https://github.com/Retsumdk/health-check-monitor) — Service health monitoring
+- [service-discovery-client](https://github.com/Retsumdk/service-discovery-client) — Dynamic service discovery
