@@ -1,3 +1,8 @@
+[![Build](https://github.com/Retsumdk/cron-scheduler-service/workflows/CI/badge.svg)](https://github.com/Retsumdk/cron-scheduler-service/actions)
+[![TypeScript](https://img.shields.io/badge/typescript-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Node.js](https://img.shields.io/badge/node.js-20-green?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org/)
+[![MIT License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
+
 # cron-scheduler-service
 
 Distributed cron with leader election
