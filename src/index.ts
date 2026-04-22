@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 /**
  * cron-scheduler-service - Distributed cron with leader election
- * Built with Zo Computer by The BookMaster
+ * Built by Retsumdk
  */
 
 import { Command } from "commander";
