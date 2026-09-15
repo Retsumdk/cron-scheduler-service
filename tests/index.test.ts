@@ -83,6 +83,17 @@ afterEach(async () => {
   }
 });
 
+/**
+ * True once every run for `jobId` has reached a terminal state. A run is
+ * recorded as `running` the instant it starts and rewritten when it finishes,
+ * so asserting on a terminal status requires waiting for settlement — not just
+ * for the record to appear.
+ */
+function settled(scheduler: CronScheduler, jobId: string): boolean {
+  const runs = scheduler.runs({ jobId });
+  return runs.length > 0 && runs.every((run) => run.status !== "running");
+}
+
 /** Polls until `predicate` holds, so tests never depend on a fixed sleep. */
 async function waitFor(predicate: () => boolean, timeoutMs = 3_000): Promise<void> {
   const deadline = Date.now() + timeoutMs;
@@ -810,7 +821,9 @@ describe("scheduler", () => {
     expect(scheduler.runs()).toEqual([]);
 
     await scheduler.tick(start + 60_000);
-    await waitFor(() => scheduler.runs({ jobId: job.id }).length > 0);
+    // Wait for the run to *settle*, not merely to appear: a run is journaled as
+    // `running` first and rewritten when it finishes.
+    await waitFor(() => settled(scheduler, job.id));
     const [record] = scheduler.runs({ jobId: job.id });
     expect(record!.status).toBe("success");
     expect(record!.output?.trim()).toBe("tick");
@@ -1138,7 +1151,7 @@ describe("scheduler", () => {
     await scheduler.start();
     expect(scheduler.listJobs().map((j) => j.name)).toEqual(["loaded"]);
     await scheduler.tick(clock.now() + 60_000);
-    await waitFor(() => scheduler.runs({ jobId: job.id }).length > 0);
+    await waitFor(() => settled(scheduler, job.id));
     expect(scheduler.runs({ jobId: job.id })[0]!.status).toBe("success");
     await scheduler.stop();
   });
