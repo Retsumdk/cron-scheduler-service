@@ -1,5 +1,28 @@
+# Dependencies
 node_modules/
+
+# Build output
 dist/
+
+# Runtime state
+.cron/
+*.runs.jsonl
+*.lock
+
+# Environment and secrets
 .env
+.env.*
+!.env.example
+
+# Logs and coverage
 *.log
 coverage/
+
+# Editor and OS noise
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# TypeScript incremental state
+*.tsbuildinfo

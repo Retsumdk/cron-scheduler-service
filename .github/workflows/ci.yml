@@ -1,13 +1,33 @@
 name: CI
-on: [push, pull_request]
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
 jobs:
-  test:
+  build-and-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
-      - run: bun install --ignore-scripts
-      - run: bun test || true
-      - run: bun build src/index.ts 2>/dev/null || true
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Typecheck
+        run: bun run typecheck
+
+      - name: Test
+        run: bun test
+
+      - name: Build
+        run: bun run build
+
+      - name: Smoke-test the built CLI
+        run: |
+          node dist/cli.js validate "*/15 9-17 * * MON-FRI"
+          node dist/cli.js next "0 3 * * *" | head -1
